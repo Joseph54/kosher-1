@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Restaurant} from '../../models/restaurant';
-import {RestaurantService} from '../../models/services/restaurant.service';
-
+// import {RestaurantService} from '../../models/services/restaurant.service';
+import {KosherApiService} from '../../models/services/kosher-api.service';
 @Component({
   selector: 'app-restaurants',
   templateUrl: './restaurants.component.html',
@@ -9,13 +9,13 @@ import {RestaurantService} from '../../models/services/restaurant.service';
 })
 export class RestaurantsComponent implements OnInit {
   // region Values
-  rests: Restaurant[];
+  rests: Restaurant[] = [];
   columns: number;
   // endregion
 
   // region DefaultMethods
   // instantiates the restaurant service.
-  constructor(private restaurantService: RestaurantService) { }
+  constructor(private restaurantService: KosherApiService) { }
 
   ngOnInit() {
     this.getRestaurants();
@@ -25,11 +25,9 @@ export class RestaurantsComponent implements OnInit {
   // region Service Getters
   getRestaurants(): void {
     // subscribes to the observable of restaurants.
-    this.restaurantService.getRestaurants()
-      .subscribe(restaurants => {
-        this.rests = restaurants;
-        this.columns = this.rests.length / 3;
-      });
+    this.restaurantService.getRestaurants().subscribe(res => {
+      this.rests = res;
+    });
   }
   // endregion
 
